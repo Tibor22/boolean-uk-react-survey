@@ -1,0 +1,54 @@
+export default function Checkboxes({ handleChange, surveyAnswers }) {
+  return (
+    <ul>
+      <li>
+        <label>
+          <input
+            onChange={handleChange}
+            name="spend-time"
+            type="checkbox"
+            value="swimming"
+            checked={surveyAnswers.swimming}
+          />
+          Swimming
+        </label>
+      </li>
+      <li>
+        <label>
+          <input
+            onChange={handleChange}
+            name="spend-time"
+            type="checkbox"
+            value="bathing"
+            checked={surveyAnswers.bathing}
+          />
+          Bathing
+        </label>
+      </li>
+      <li>
+        <label>
+          <input
+            onChange={handleChange}
+            name="spend-time"
+            type="checkbox"
+            value="chatting"
+            checked={surveyAnswers.chatting}
+          />
+          Chatting
+        </label>
+      </li>
+      <li>
+        <label>
+          <input
+            onChange={handleChange}
+            name="spend-time"
+            type="checkbox"
+            value="noTime"
+            checked={surveyAnswers.noTime}
+          />
+          I don't like to spend time with it
+        </label>
+      </li>
+    </ul>
+  );
+}
