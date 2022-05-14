@@ -1,3 +1,23 @@
 {
-  "surveys": []
+  "surveys": [
+    {
+      "swimming": true,
+      "bathing": true,
+      "chatting": false,
+      "noTime": false,
+      "rating": "3",
+      "review": "zcda",
+      "name": "Tibor22",
+      "email": "tothtibitravel@gmail.com",
+      "editActive": false,
+      "id": 0.04597730867553573
+    },
+    {
+      "editActive": false,
+      "rating": "2",
+      "bathing": true,
+      "swimming": true,
+      "id": 1.0459773086755357
+    }
+  ]
 }

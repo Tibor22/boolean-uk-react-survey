@@ -8,12 +8,6 @@ function Main() {
   const [userData, setUserData] = useState([]);
   const { data } = useFetch("http://localhost:3001/surveys");
 
-  // useEffect(() => {
-  //   && setUserData(data);
-  // }, []);
-
-  console.log(userData);
-
   return (
     <main className="main">
       <section className={`main__list ${open ? "open" : ""}`}>

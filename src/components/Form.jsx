@@ -27,8 +27,6 @@ export default function Form({ userData, setUserData, data: fetchData }) {
   }, []);
 
   useEffect(() => {
-    console.log("INSIDE USE EFFECT");
-
     if (userData.length > 0) {
       const filterForm = userData.filter((data) => data.editActive)[0];
       console.log(filterForm);
@@ -36,10 +34,9 @@ export default function Form({ userData, setUserData, data: fetchData }) {
     }
   }, [userData]);
 
-  console.log("SURVEYANSWERS:", surveyAnswers);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
+    console.log(e);
     switch (name) {
       case "color":
         setSurveyAnswers({
@@ -72,21 +69,37 @@ export default function Form({ userData, setUserData, data: fetchData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    let prevID = null;
     setUserData((prevAnswers) => {
+      console.log("PREV ANSWERS:", prevAnswers);
       if (prevAnswers.find((answer) => answer.name === surveyAnswers.name)) {
-        return (prevAnswers = prevAnswers.map((answer) =>
-          answer.name === surveyAnswers.name
-            ? { ...surveyAnswers, editActive: false }
-            : { ...answer }
-        ));
+        return (prevAnswers = prevAnswers.map(async (answer) => {
+          console.log("ANSWER ID", answer.id);
+          prevID = answer.id;
+          if (answer.name === surveyAnswers.name) {
+            postData({
+              ...surveyAnswers,
+              editActive: false,
+              id: answer.id,
+            });
+            return { ...surveyAnswers, editActive: false, id: answer.id };
+          } else {
+            return { ...answer };
+          }
+        }));
       } else {
         return [...prevAnswers, surveyAnswers];
       }
     });
     console.log(surveyAnswers);
 
-    postData({ ...surveyAnswers });
+    // const options = {
+    //   method: "DELETE",
+    // };
     setSurveyAnswers(initialData);
+    // prevID && (await fetch(`http://localhost:3001/surveys/${prevID}`, options));
+    // setUserData((prevData) => prevData.filter((data) => data.id !== id));
   };
 
   return (
