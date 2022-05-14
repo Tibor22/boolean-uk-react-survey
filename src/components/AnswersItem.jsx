@@ -9,11 +9,9 @@ const answersSet = {
 };
 
 function ItemsList({ list, values }) {
-  console.log(list);
   return (
     <ul>
       {list.map((item, i) => {
-        console.log(item);
         return values[i] && <li key={i}>{answersSet[item]}</li>;
       })}
     </ul>
@@ -24,13 +22,36 @@ function ItemsList({ list, values }) {
 export default function AnswersItem({
   // Feel free to change this props names to what suits you best
   // Rememeber here we're destructuring answerItem, which is the prop name that we've passed
-  data: { name, rating, swimming, bathing, chatting, noTime, review },
+  data: {
+    name,
+    rating,
+    swimming,
+    bathing,
+    chatting,
+    noTime,
+    review,
+    editActive,
+  },
+  userData,
+  setUserData,
 }) {
   const timeSpent = {
     swimming: swimming,
     bathing: bathing,
     chatting: chatting,
     noTime: noTime,
+  };
+
+  const handleEdit = (e) => {
+    console.log("EDIT");
+    setUserData((prevData) => {
+      console.log("EDIT", prevData);
+      return prevData.map((dataA) =>
+        dataA.name === name
+          ? { ...dataA, editActive: true }
+          : { ...dataA, editActive: false }
+      );
+    });
   };
 
   return (
@@ -50,10 +71,13 @@ export default function AnswersItem({
         </p>
         <p>
           <em>What else have you got to say about your rubber duck?</em>
+
           <span className="answer__line">{review}</span>
         </p>
+        <button onClick={handleEdit} className="edit">
+          EDIT SURVEY
+        </button>
       </article>
-      <button className="edit">EDIT SURVEY</button>
     </li>
   );
 }

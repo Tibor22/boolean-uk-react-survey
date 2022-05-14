@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Checkboxes from "./Checkboxes";
 import Radios from "./Radios";
 const initialData = {
@@ -10,10 +10,27 @@ const initialData = {
   review: "",
   name: "",
   email: "",
+  editActive: false,
 };
 
 export default function Form({ userData, setUserData }) {
   const [surveyAnswers, setSurveyAnswers] = useState(initialData);
+
+  // console.log(userData);
+  // const ref = useRef(userData).current;
+
+  // console.log("REF:", ref);
+
+  useEffect(() => {
+    console.log("INSIDE USE EFFECT");
+    if (userData.length > 0) {
+      const filterForm = userData.filter((data) => data.editActive)[0];
+      console.log(filterForm);
+      if (filterForm) setSurveyAnswers(filterForm);
+    }
+  }, [userData]);
+
+  console.log("SURVEYANSWERS:", surveyAnswers);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -37,7 +54,17 @@ export default function Form({ userData, setUserData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setUserData((prevAnswers) => [...prevAnswers, surveyAnswers]);
+    setUserData((prevAnswers) => {
+      if (prevAnswers.find((answer) => answer.name === surveyAnswers.name)) {
+        return (prevAnswers = prevAnswers.map((answer) =>
+          answer.name === surveyAnswers.name
+            ? { ...surveyAnswers, editActive: false }
+            : { ...answer }
+        ));
+      } else {
+        return [...prevAnswers, surveyAnswers];
+      }
+    });
     console.log(surveyAnswers);
     setSurveyAnswers(initialData);
   };

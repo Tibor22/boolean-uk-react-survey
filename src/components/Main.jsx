@@ -12,7 +12,9 @@ function Main() {
       <section className={`main__list ${open ? "open" : ""}`}>
         <h2>Answers list</h2>
         {/* answers should go here */}
-        {userData && <AnswersList userData={userData} />}
+        {userData && (
+          <AnswersList userData={userData} setUserData={setUserData} />
+        )}
       </section>
       <section className="main__form">
         <Form userData={userData} setUserData={setUserData} />
