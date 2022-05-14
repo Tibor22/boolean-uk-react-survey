@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useFetch } from "../hooks/useFetch.js";
 import Checkboxes from "./Checkboxes";
 import Radios from "./Radios";
 const initialData = {
@@ -11,18 +12,23 @@ const initialData = {
   name: "",
   email: "",
   editActive: false,
+  id: "",
 };
 
-export default function Form({ userData, setUserData }) {
+export default function Form({ userData, setUserData, data: fetchData }) {
   const [surveyAnswers, setSurveyAnswers] = useState(initialData);
+  const { postData, data, error } = useFetch(
+    "http://localhost:3001/surveys",
+    "POST"
+  );
 
-  // console.log(userData);
-  // const ref = useRef(userData).current;
-
-  // console.log("REF:", ref);
+  useEffect(() => {
+    setUserData(fetchData);
+  }, []);
 
   useEffect(() => {
     console.log("INSIDE USE EFFECT");
+
     if (userData.length > 0) {
       const filterForm = userData.filter((data) => data.editActive)[0];
       console.log(filterForm);
@@ -36,19 +42,31 @@ export default function Form({ userData, setUserData }) {
 
     switch (name) {
       case "color":
-        setSurveyAnswers({ ...surveyAnswers, rating: value });
+        setSurveyAnswers({
+          ...surveyAnswers,
+          rating: value,
+          id: Math.random(),
+        });
         break;
       case "spend-time":
-        setSurveyAnswers({ ...surveyAnswers, [value]: checked });
+        setSurveyAnswers({
+          ...surveyAnswers,
+          [value]: checked,
+          id: Math.random(),
+        });
         break;
       case "review":
-        setSurveyAnswers({ ...surveyAnswers, review: value });
+        setSurveyAnswers({
+          ...surveyAnswers,
+          review: value,
+          id: Math.random(),
+        });
         break;
       case "email":
-        setSurveyAnswers({ ...surveyAnswers, email: value });
+        setSurveyAnswers({ ...surveyAnswers, email: value, id: Math.random() });
         break;
       case "username":
-        setSurveyAnswers({ ...surveyAnswers, name: value });
+        setSurveyAnswers({ ...surveyAnswers, name: value, id: Math.random() });
     }
   };
 
@@ -66,6 +84,8 @@ export default function Form({ userData, setUserData }) {
       }
     });
     console.log(surveyAnswers);
+
+    postData({ ...surveyAnswers });
     setSurveyAnswers(initialData);
   };
 

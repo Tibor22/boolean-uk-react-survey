@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useFetch } from "../hooks/useFetch";
 import Form from "./Form.jsx";
 import AnswersList from "./AnswersList.jsx";
 
 function Main() {
   const [open, setOpen] = useState(false); //Ignore this state
   const [userData, setUserData] = useState([]);
+  const { data } = useFetch("http://localhost:3001/surveys");
+
+  // useEffect(() => {
+  //   && setUserData(data);
+  // }, []);
+
   console.log(userData);
 
   return (
@@ -17,7 +24,9 @@ function Main() {
         )}
       </section>
       <section className="main__form">
-        <Form userData={userData} setUserData={setUserData} />
+        {data && (
+          <Form userData={userData} data={data} setUserData={setUserData} />
+        )}
       </section>
     </main>
   );

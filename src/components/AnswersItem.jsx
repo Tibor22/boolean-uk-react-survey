@@ -1,5 +1,6 @@
 // Components don't need to be separeted into individual files
 // Here we have a smaller component that helps compose the AnswersItem below
+import { useDeleted } from "../hooks/Delete";
 
 const answersSet = {
   swimming: "Swimming",
@@ -31,6 +32,7 @@ export default function AnswersItem({
     noTime,
     review,
     editActive,
+    id,
   },
   userData,
   setUserData,
@@ -52,6 +54,15 @@ export default function AnswersItem({
           : { ...dataA, editActive: false }
       );
     });
+  };
+
+  const handleDelete = async (e) => {
+    console.log(name, id);
+    const options = {
+      method: "DELETE",
+    };
+    await fetch(`http://localhost:3001/surveys/${id}`, options);
+    setUserData((prevData) => prevData.filter((data) => data.id !== id));
   };
 
   return (
@@ -76,6 +87,9 @@ export default function AnswersItem({
         </p>
         <button onClick={handleEdit} className="edit">
           EDIT SURVEY
+        </button>
+        <button onClick={handleDelete} className="delete">
+          DELETE
         </button>
       </article>
     </li>
